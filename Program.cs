@@ -41,17 +41,14 @@ public class Program
     {
         var entries = new List<NewsEntry>();
         string baseUrl = "https://news.ycombinator.com/";
-        string currentUrl = baseUrl;
-        int totalCount = 0;  
 
         try
         {
-            while (!string.IsNullOrEmpty(currentUrl))
-            {
+            
                 var web = new HtmlWeb();
 
-                Console.WriteLine($"\nAttempting to load page: {currentUrl}");
-                var doc = web.Load(currentUrl);
+                Console.WriteLine($"\nAttempting to load page: {baseUrl}");
+                var doc = web.Load(baseUrl);
                 Console.WriteLine("Page loaded successfully.");
 
                 if (doc == null)
@@ -59,25 +56,23 @@ public class Program
                     Console.WriteLine("Error: Failed to load the page.");
                     return entries;
                 }
-
-                
-
+ 
                 var titleNodes = doc.DocumentNode.SelectNodes("//tr[@class='athing']");
                 var subtextNodes = doc.DocumentNode.SelectNodes("//td[@class='subtext']");
 
                 if (titleNodes == null || subtextNodes == null)
                 {
                     Console.WriteLine("Error: Unable to fetch title or subtext nodes from Hacker News.");
-                    break;
-                }
+                return entries;
+            }
 
                 Console.WriteLine($"Found {titleNodes.Count} title nodes and {subtextNodes.Count} subtext nodes.");
 
                 for (int i = 0; i < Math.Min(30, titleNodes.Count); i++)
                 {
-                    totalCount++; 
+                var number = i + 1;
 
-                    var titleNode = titleNodes[i].SelectSingleNode(".//td[@class='title']//a");
+                var titleNode = titleNodes[i].SelectSingleNode(".//td[@class='title']//a");
                     var title = titleNode?.InnerText ?? "No title";
 
                     var pointsText = subtextNodes[i].SelectSingleNode(".//span[@class='score']")?.InnerText ?? "0 points";
@@ -102,26 +97,11 @@ public class Program
                         }
                     }
 
-                    entries.Add(new NewsEntry { Number = totalCount, Title = title, Points = points, Comments = comments });
+                    entries.Add(new NewsEntry { Number = number, Title = title, Points = points, Comments = comments });
 
-                    Console.WriteLine($"Entry {totalCount}: {title} - {points} points - {comments} comments");
+                    Console.WriteLine($"Entry {number}: {title} - {points} points - {comments} comments");
                 }
 
-                var moreLinkNode = doc.DocumentNode.SelectSingleNode("//a[@class='morelink']");
-                if (moreLinkNode != null)
-                {
-                    var nextPageRelativeUrl = moreLinkNode.GetAttributeValue("href", string.Empty);
-                    currentUrl = baseUrl + nextPageRelativeUrl;
-                }
-                else
-                {
-                    currentUrl = null;
-                    Console.WriteLine("No more pages to scrape.");
-                }
-
-                Console.WriteLine("\nSleeping for 5 seconds to avoid rate-limiting...");
-                Thread.Sleep(5000);
-            }
         }
         catch (Exception ex)
         {
@@ -156,7 +136,7 @@ public class Program
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string databasePath = System.IO.Path.Combine(desktopPath, "usage_logs.db");
 
-            using (var connection = new SQLiteConnection("Data Source={databasePath};Version=3;"))
+            using (var connection = new SQLiteConnection($"Data Source={databasePath};Version=3;"))
             {
                 connection.Open();
 
