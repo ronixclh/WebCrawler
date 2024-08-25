@@ -24,4 +24,4 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Test
-        run: dotnet test WebCrawler.sln --no-restore --verbosity normal
+        run: dotnet test WebCrawlerTests/WebCrawlerTests.csproj --no-restore --verbosity normal
