@@ -1,12 +1,9 @@
 using HtmlAgilityPack;
 using Moq;
-using NUnit.Framework;
-using System.Collections.Generic;
-using WebCrawler.Models;
-using WebCrawler.Services;
-using WebCrawler.Services.Contracts;
+using WebCrawlerAPI.Models;
+using WebCrawlerAPI.Services.Contracts;
 
-namespace WebCrawlerTests
+namespace WebCrawlerAPITests
 {
     public class FilterTests
     {
