@@ -1,5 +1,7 @@
 using HtmlAgilityPack;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WebCrawlerAPI.Controllers;
 using WebCrawlerAPI.Models;
 using WebCrawlerAPI.Services.Contracts;
 
@@ -112,7 +114,7 @@ namespace WebCrawlerAPITests
 
             var result = _scraper.ScrapeHackerNews();
 
-            Assert.That(result.Count, Is.EqualTo(0)); 
+            Assert.That(result.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -123,6 +125,77 @@ namespace WebCrawlerAPITests
             var result = _scraper.ScrapeHackerNews();
 
             Assert.That(result.Count, Is.EqualTo(0));
+        }
+
+
+    }
+
+    [TestFixture]
+    public class NewsControllerTests
+    {
+        private Mock<IScrapper> _scraperMock;
+        private Mock<IFilter> _filterMock;
+        private Mock<ICrawlerLogger> _loggerMock;
+        private NewsController _controller;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _scraperMock = new Mock<IScrapper>();
+            _filterMock = new Mock<IFilter>();
+            _loggerMock = new Mock<ICrawlerLogger>();
+            _controller = new NewsController(_scraperMock.Object, _filterMock.Object, _loggerMock.Object);
+        }
+
+        [Test]
+        public void GetMoreThan5Words_ReturnsOkWithFilteredEntries()
+        {
+            var mockEntries = new List<NewsEntry>
+            {
+                new NewsEntry { Number = 1, Title = "Test Title One", Points = 100, Comments = 50 },
+                new NewsEntry { Number = 2, Title = "Another Test Title", Points = 80, Comments = 30 },
+                new NewsEntry { Number = 2, Title = "Another Test Title One Two Three", Points = 80, Comments = 30 }
+            };
+
+            _scraperMock.Setup(s => s.ScrapeHackerNews()).Returns(mockEntries);
+            var filteredEntries = mockEntries.Where(e => e.Title.Split(' ').Length > 5).ToList();
+            _filterMock.Setup(f => f.FilterByWordCount(mockEntries, 5, true)).Returns(filteredEntries);
+
+            var result = _controller.GetMoreThan5Words();
+
+            Assert.That(result.Result, Is.TypeOf<OkObjectResult>());
+            var okResult = result.Result as OkObjectResult;
+            Assert.That(okResult, Is.Not.Null);
+            var returnEntries = okResult.Value as IEnumerable<NewsEntry>;
+            Assert.That(returnEntries, Is.Not.Null);
+            Assert.That((returnEntries as List<NewsEntry>).Count, Is.EqualTo(1));
+
+            _loggerMock.Verify(l => l.StoreRequestLog("More than 5 words"), Times.Once);
+        }
+
+        [Test]
+        public void GetLessThanOrEqual5Words_ReturnsOkWithFilteredEntries()
+        {
+            // Arrange
+            var mockEntries = new List<NewsEntry>
+            {
+                new NewsEntry { Number = 1, Title = "Short Title", Points = 50, Comments = 20 }
+            };
+
+            _scraperMock.Setup(s => s.ScrapeHackerNews()).Returns(mockEntries);
+            _filterMock.Setup(f => f.FilterByWordCount(mockEntries, 5, false)).Returns(mockEntries);
+
+            // Act
+            var result = _controller.GetLessThanOrEqual5Words();
+
+            // Assert
+            Assert.That(result.Result, Is.TypeOf<OkObjectResult>());
+            var okResult = result.Result as OkObjectResult;
+            var returnEntries = okResult.Value as IEnumerable<NewsEntry>;
+            Assert.That(returnEntries, Is.Not.Null);
+            Assert.That((returnEntries as List<NewsEntry>).Count, Is.EqualTo(1));
+
+            _loggerMock.Verify(l => l.StoreRequestLog("Less than or equal to 5 words"), Times.Once);
         }
     }
 }
