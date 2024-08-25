@@ -1,3 +1,5 @@
+using WebCrawler.Services;
+
 namespace WebCrawlerTests
 {
     public class WebCrawlerTests
@@ -11,8 +13,9 @@ namespace WebCrawlerTests
         public void Test1()
         {
             string input = "Test string";
+            var filter = new Filter();
 
-            int wordCount = Program.CountWords(input);
+            int wordCount = filter.CountWords(input);
 
             Assert.That(wordCount, Is.EqualTo(2));
         }
