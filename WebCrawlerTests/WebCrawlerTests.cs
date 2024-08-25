@@ -1,6 +1,6 @@
 namespace WebCrawlerTests
 {
-    public class Tests
+    public class WebCrawlerTests
     {
         [SetUp]
         public void Setup()
