@@ -17,7 +17,7 @@ public class Filter:IFilter
 
     public int CountWords(string title)
     {
-        var cleanTitle = Regex.Replace(title, @"[^\w\s]", "");
+        var cleanTitle = Regex.Replace(title, @"[^\p{L}\s]", "");
         return cleanTitle.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
     }
 }

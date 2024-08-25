@@ -1,10 +1,13 @@
-﻿using WebCrawler.Models;
+﻿using HtmlAgilityPack;
+using WebCrawler.Models;
+using WebCrawler.Services;
 
 public class Program
 {
     static void Main(string[] args)
     {
-        var scraper = new Scraper();
+        var htmlWeb = new HtmlLoader();
+        var scraper = new Scraper(htmlWeb);
         var filter = new Filter();
         var logger = new Logger();
 

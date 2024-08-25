@@ -5,6 +5,13 @@ using WebCrawler.Services.Contracts;
 
 public class Scraper: IScrapper
 {
+    private readonly IHtmlLoader _htmlLoader;  // Declare a private field for HtmlWeb
+
+    // Constructor to inject the HtmlWeb dependency
+    public Scraper(IHtmlLoader htmlLoader)
+    {
+        _htmlLoader = htmlLoader;
+    }
     public List<NewsEntry> ScrapeHackerNews()
     {
         var entries = new List<NewsEntry>();
@@ -12,9 +19,9 @@ public class Scraper: IScrapper
 
         try
         {
-            var web = new HtmlWeb();
+            
             Console.WriteLine($"\nAttempting to load page: {baseUrl}");
-            var doc = web.Load(baseUrl);
+            var doc = _htmlLoader.Load(baseUrl);
             Console.WriteLine("Page loaded successfully.");
 
             if (doc == null)
