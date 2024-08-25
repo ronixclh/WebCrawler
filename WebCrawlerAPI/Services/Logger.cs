@@ -8,8 +8,10 @@ public class Logger: ICrawlerLogger
     {
         try
         {
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string databasePath = System.IO.Path.Combine(desktopPath, "WebCrawler.db");
+             
+            string appPath = AppDomain.CurrentDomain.BaseDirectory;
+            string databasePath = System.IO.Path.Combine(appPath, "WebCrawler.db");
+            Console.WriteLine($"Database path: {databasePath}");
 
             using (var connection = new SQLiteConnection($"Data Source={databasePath};Version=3;"))
             {
