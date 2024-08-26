@@ -1,0 +1,13 @@
+﻿version: "3.8"
+services:
+  webcrawlerapi:
+    build:
+      context: ./WebCrawlerAPI
+      dockerfile: Dockerfile
+    image: webcrawlerapi:latest
+    ports:
+      - "8080:80"    
+    volumes:
+      - ./WebCrawlerAPI/bin/Debug/net8.0/WebCrawler.db:/app/WebCrawler.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
