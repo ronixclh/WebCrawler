@@ -176,7 +176,7 @@ namespace WebCrawlerAPITests
         [Test]
         public void GetLessThanOrEqual5Words_ReturnsOkWithFilteredEntries()
         {
-            // Arrange
+            
             var mockEntries = new List<NewsEntry>
             {
                 new NewsEntry { Number = 1, Title = "Short Title", Points = 50, Comments = 20 }
@@ -185,10 +185,8 @@ namespace WebCrawlerAPITests
             _scraperMock.Setup(s => s.ScrapeHackerNews()).Returns(mockEntries);
             _filterMock.Setup(f => f.FilterByWordCount(mockEntries, 5, false)).Returns(mockEntries);
 
-            // Act
             var result = _controller.GetLessThanOrEqual5Words();
 
-            // Assert
             Assert.That(result.Result, Is.TypeOf<OkObjectResult>());
             var okResult = result.Result as OkObjectResult;
             var returnEntries = okResult.Value as IEnumerable<NewsEntry>;
