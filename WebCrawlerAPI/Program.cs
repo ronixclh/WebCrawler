@@ -15,8 +15,6 @@ namespace WebCrawlerAPI
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     
-
-
                     webBuilder.UseStartup<Startup>();
                 });
     }
