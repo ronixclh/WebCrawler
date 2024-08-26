@@ -4,7 +4,7 @@
 
 **WebCrawler API** is a .NET Core web application that scrapes news entries from [Hacker News](https://news.ycombinator.com/) and provides a REST API to filter these entries based on the number of words in the title and their popularity. 
 
-FIrst 30 entries are scrapped and logged in the console.
+First 30 entries are scrapped and logged in the console.
 
 The API offers two endpoints:
 
