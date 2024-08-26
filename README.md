@@ -58,7 +58,7 @@ By default, it runs on https://localhost:7089. You can access the Swagger UI for
 https://localhost:7089/index.html
 ````
 
-## Running the Application Locally
+## Running the Application with Docker
 
 ### Step 1: Build and Run Docker Containers
 
