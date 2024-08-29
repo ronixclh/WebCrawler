@@ -14,7 +14,10 @@ namespace WebCrawlerAPI
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    
+                    webBuilder.UseKestrel(options =>
+                    {
+                        options.ListenAnyIP(80);  // Only listen for HTTP
+                    });
                     webBuilder.UseStartup<Startup>();
                    
                 });
