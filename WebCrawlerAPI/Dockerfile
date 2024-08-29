@@ -19,6 +19,9 @@ WORKDIR /app
 # Copy the published application from the build stage
 COPY --from=build /app/out .
 
+# Copy the SQLite database file into the container
+COPY WebCrawler.db /app/WebCrawler.db
+
 # Expose the port the app runs on
 EXPOSE 80
 

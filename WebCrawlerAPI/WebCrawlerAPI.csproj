@@ -15,4 +15,11 @@
 
   </ItemGroup>
 
+	<ItemGroup>
+		<None Update="WebCrawlerAPI/WebCrawler.db">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+
 </Project>

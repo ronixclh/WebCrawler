@@ -16,6 +16,7 @@ namespace WebCrawlerAPI
                 {
                     
                     webBuilder.UseStartup<Startup>();
+                   
                 });
     }
 }
