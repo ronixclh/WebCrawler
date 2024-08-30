@@ -43,20 +43,13 @@ To run the project, ensure you have the following installed:
 git clone https://github.com/ronixclh/WebCrawler.git
 ````
 
-### Step 2: Install Dependencies
-
-````bash
-cd WebCrawlerAPI
-dotnet restore
-````
-
-### Step 3: Build and Run Docker Containers
+### Step 2: Build and Run Docker Containers
 
 ````bash
 docker-compose up --build
 ````
 
-### Step 4: Access the API
+### Step 3: Access the API
 
 ````bash
 http://localhost:8080/index.html
