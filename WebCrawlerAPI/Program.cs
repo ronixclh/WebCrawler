@@ -17,11 +17,7 @@ namespace WebCrawlerAPI
                     webBuilder.UseKestrel(options =>
                     {
                         options.ListenAnyIP(80);  
-                        options.ListenAnyIP(5209);  
-                        options.ListenAnyIP(7089, listenOptions =>
-                        {
-                            listenOptions.UseHttps(); 
-                        });
+                        
                     });
                     webBuilder.UseStartup<Startup>();
                    
