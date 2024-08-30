@@ -35,7 +35,7 @@ To run the project, ensure you have the following installed:
 
 ---
 
-## Running the Application Locally
+## Running the Application with Docker
 
 ### Step 1: Clone the Repository
 
@@ -50,23 +50,13 @@ cd WebCrawlerAPI
 dotnet restore
 ````
 
-### Step 3: Run the Application
-
-By default, it runs on https://localhost:7089. You can access the Swagger UI for API testing at:
-
-````bash
-https://localhost:7089/index.html
-````
-
-## Running the Application with Docker
-
-### Step 1: Build and Run Docker Containers
+### Step 3: Build and Run Docker Containers
 
 ````bash
 docker-compose up --build
 ````
 
-### Step 2: Access the API
+### Step 4: Access the API
 
 ````bash
 http://localhost:8080/index.html
